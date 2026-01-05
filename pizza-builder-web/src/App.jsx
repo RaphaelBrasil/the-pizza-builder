@@ -153,7 +153,7 @@ function App() {
 
         <section className="bg-white shadow-sm rounded-2xl border border-slate-200 p-6 space-y-4">
           <div className="flex items-center justify-between flex-wrap gap-3">
-            <h2 className="text-2xl font-semibold">1) Initial data</h2>
+            <h2 className="text-2xl font-semibold">1) Available options</h2>
             <div className="flex gap-2">
               <span className="inline-flex items-center gap-2 bg-amber-50 text-amber-800 border border-amber-100 rounded-full px-3 py-1 text-sm font-semibold">
                 Sizes available: {sizes.length}
