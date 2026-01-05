@@ -1,25 +1,25 @@
 # Pizza Builder API
 
-API simples em Express para montar pizzas com base em dados em memória.
+Simple Express API to build pizzas using in-memory data.
 
-## Como rodar
+## How to run
 
 ```bash
 npm install
 npm run dev
-# ou: npm start
+# or: npm start
 ```
 
-Por padrão sobe em `http://localhost:8080`.
+Defaults to `http://localhost:8080`.
 
-## Rotas
+## Routes
 
-- `GET /health` — status da aplicação.
-- `GET /sizes` — tamanhos disponíveis com preço base.
-- `GET /ingredients` — ingredientes disponíveis com seus preços.
-- `GET /pizzas` — lista de pizzas já criadas.
-- `GET /pizzas/:id` — detalhes de uma pizza.
-- `POST /pizzas` — cria uma nova pizza. Exemplo de payload:
+- `GET /health` — app status.
+- `GET /sizes` — available sizes with base price.
+- `GET /ingredients` — available ingredients with prices.
+- `GET /pizzas` — list of created pizzas.
+- `GET /pizzas/:id` — pizza details.
+- `POST /pizzas` — create a pizza. Payload example:
 
 ```json
 {
@@ -29,10 +29,10 @@ Por padrão sobe em `http://localhost:8080`.
 }
 ```
 
-## Estrutura
+## Structure
 
-- `src/app.js`: configuração do Express.
-- `src/server.js`: bootstrap do servidor.
-- `src/routes/`: rotas agrupadas (health, sizes, ingredients, pizzas).
-- `src/data/`: dados em memória (tamanhos, ingredientes, pizzas).
-- `src/utils/price.js`: utilitário para cálculo de preço de pizza.
+- `src/app.js`: Express setup.
+- `src/server.js`: server bootstrap.
+- `src/routes/`: grouped routes (health, sizes, ingredients, pizzas).
+- `src/data/`: in-memory data (sizes, ingredients, pizzas).
+- `src/utils/price.js`: price calculation helper.

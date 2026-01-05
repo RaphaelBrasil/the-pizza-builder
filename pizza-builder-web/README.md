@@ -1,31 +1,31 @@
 # Pizza Builder Web
 
-Frontend em React + Vite para consumir a Pizza Builder API.
+React + Vite frontend that consumes the Pizza Builder API.
 
-## Como rodar
+## How to run
 
-No diretório `pizza-builder-web`:
+From the `pizza-builder-web` directory:
 
 ```bash
 npm install
 npm run dev
 ```
 
-Por padrão o Vite sobe em `http://localhost:5173` e faz proxy para a API em `http://localhost:8080` via `/api`.
+By default Vite runs at `http://localhost:5173` and proxies API calls to `http://localhost:8080` via `/api`.
 
 ## Stack
 
 - React 18 + Vite
-- Tailwind CSS (configurado via `postcss.config.js` e `tailwind.config.js`)
-- react-hook-form para o formulário de criação
+- Tailwind CSS (configured via `postcss.config.js` and `tailwind.config.js`)
+- react-hook-form for the creation form
 
-## Variáveis de ambiente
+## Environment variables
 
-- `VITE_API_BASE` (opcional): se quiser apontar para outra URL em produção. Por padrão usa `/api` com proxy de dev.
+- `VITE_API_BASE` (optional): point to another API URL in production. Defaults to `/api` with the dev proxy.
 
-## Funcionalidades atuais
+## Current features
 
-- Load inicial com GET `/sizes` e `/ingredients` (mostra “Loading...” durante a busca).
-- Pizza Builder: formulário com nome, tamanho (radio) e ingredientes (checkbox), validação no cliente e POST `/pizzas`; exibe resumo ao criar.
-- Listagem de pizzas: GET `/pizzas` com filtro por `customerName` e ordenação por preço/data.
-- Buscar pizza por ID: GET `/pizzas/:id` com mensagem “Pizza not found” quando não existir.
+- Initial load with GET `/sizes` and `/ingredients` (shows “Loading...” while fetching).
+- Pizza Builder: form with name, size (radio), and ingredients (checkbox), client-side validation, POST `/pizzas`, and a summary after creation.
+- Pizza list: GET `/pizzas` with `customerName` filter and sorting by price/date.
+- Find pizza by ID: GET `/pizzas/:id` with “Pizza not found” when missing.
