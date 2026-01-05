@@ -1,0 +1,4 @@
+{
+  // Evita falso-positivo de @tailwind no lint do VS Code quando o Tailwind não é resolvido pelo language server.
+  "css.lint.unknownAtRules": "ignore"
+}
