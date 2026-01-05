@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { createPizza, getIngredients, getPizzas, getSizes } from './api';
+import { createPizza, getIngredients, getPizzaById, getPizzas, getSizes } from './api';
 
 function App() {
   const [sizes, setSizes] = useState([]);
@@ -15,6 +15,10 @@ function App() {
   const [filterName, setFilterName] = useState('');
   const [sortBy, setSortBy] = useState('');
   const [sortOrder, setSortOrder] = useState('asc');
+  const [searchId, setSearchId] = useState('');
+  const [searchResult, setSearchResult] = useState(null);
+  const [searchError, setSearchError] = useState(null);
+  const [searchLoading, setSearchLoading] = useState(false);
 
   const {
     register,
@@ -102,6 +106,36 @@ function App() {
       setIsCreating(false);
     }
   });
+
+  const handleSearch = async (event) => {
+    event.preventDefault();
+    setSearchError(null);
+    setSearchResult(null);
+
+    const trimmed = searchId.trim();
+    if (!trimmed) {
+      setSearchError('Informe um ID para buscar.');
+      return;
+    }
+
+    // ID da API é numérico; validamos para evitar 400 desnecessário.
+    const numericId = Number(trimmed);
+    if (Number.isNaN(numericId)) {
+      setSearchError('O ID precisa ser numérico.');
+      return;
+    }
+
+    setSearchLoading(true);
+    try {
+      const pizza = await getPizzaById(trimmed);
+      setSearchResult(pizza);
+    } catch (err) {
+      // API retorna 404 com erro “Pizza not found”.
+      setSearchError(err.message || 'Pizza not found');
+    } finally {
+      setSearchLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-slate-100 text-slate-900">
@@ -363,7 +397,57 @@ function App() {
           </div>
         </section>
 
+        <section className="bg-white shadow-sm rounded-2xl border border-slate-200 p-6 space-y-4">
+          <div className="flex items-center justify-between flex-wrap gap-3">
+            <h2 className="text-2xl font-semibold">4) Buscar Pizza por ID</h2>
+            <span className="text-sm text-slate-500">GET /pizzas/:id</span>
+          </div>
 
+          <form className="flex flex-col sm:flex-row gap-3" onSubmit={handleSearch}>
+            <input
+              className="flex-1 rounded-lg border border-slate-200 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-rose-200"
+              type="text"
+              inputMode="numeric"
+              placeholder="Ex: 1, 2, 3..."
+              value={searchId}
+              onChange={(e) => setSearchId(e.target.value)}
+            />
+            <button
+              type="submit"
+              className="inline-flex items-center justify-center rounded-xl bg-indigo-600 px-4 py-2 text-white font-semibold shadow hover:bg-indigo-700 transition disabled:opacity-60"
+              disabled={searchLoading}
+            >
+              {searchLoading ? 'Buscando...' : 'Buscar'}
+            </button>
+          </form>
+
+          {searchError && (
+            <p className="rounded-xl border border-rose-200 bg-rose-50 text-rose-800 px-4 py-3 text-sm">{searchError}</p>
+          )}
+
+          {searchResult && (
+            <div className="rounded-2xl border border-indigo-200 bg-indigo-50 p-4">
+              <h3 className="text-lg font-semibold text-indigo-800">Pizza #{searchResult.id}</h3>
+              <ul className="text-indigo-900 text-sm space-y-1 mt-2">
+                <li>
+                  <strong>Cliente:</strong> {searchResult.customerName}
+                </li>
+                <li>
+                  <strong>Tamanho:</strong> {searchResult.size?.name} (basePrice: {searchResult.size?.basePrice})
+                </li>
+                <li>
+                  <strong>Ingredientes:</strong> {searchResult.ingredients?.map((i) => i.name).join(', ')}
+                </li>
+                <li>
+                  <strong>Preço final:</strong> {searchResult.finalPrice}
+                </li>
+                <li>
+                  <strong>Criado em:</strong> {new Date(searchResult.createdAt).toLocaleString()}
+                </li>
+              </ul>
+            </div>
+          )}
+        </section>
       </div>
     </div>
   );
